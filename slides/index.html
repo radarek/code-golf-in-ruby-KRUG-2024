@@ -1,0 +1,975 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+<title>Slides</title>
+
+<meta name="description" content="">
+<meta name="author" content="">
+<meta name="generator" content="reveal-ck 4.0.0">
+
+
+
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+
+
+<!-- Code syntax highlighting -->
+<link rel="stylesheet" href="css/reset.css">
+<link rel="stylesheet" href="css/reveal.css">
+<link rel="stylesheet" href="css/theme/serif.css" id="theme">
+
+<!-- Theme used for syntax highlighting of code -->
+<link rel="stylesheet" href="lib/css/monokai.css">
+
+<link rel="stylesheet" href="css/reveal-ck.css">
+
+
+<!-- Printing and PDF exports -->
+<script>
+  var link = document.createElement( 'link' );
+  link.rel = 'stylesheet';
+  link.type = 'text/css';
+  link.href = window.location.search.match( /print-pdf/gi ) ? 'css/print/pdf.css' : 'css/print/paper.css';
+  document.getElementsByTagName( 'head' )[0].appendChild( link );
+</script>
+
+  </head>
+
+  <body>
+    <div class="reveal">
+  <div class="slides">
+    <section>
+
+<style type="text/css">
+  .reveal pre {
+    font-size: 0.60em;
+    width: 100%;
+  }
+
+  pre.normal {
+    font-size: 0.55em;
+  }
+
+  pre.medium {
+    font-size: 0.7em;
+  }
+
+  pre.large {
+    font-size: 0.9em;
+  }
+
+  pre.small {
+    font-size: 0.40em;
+  }
+
+  .monospace {
+    font-family: monospace !important;
+  }
+
+
+.reveal section img {
+  border: none;
+}
+
+</style>
+
+<h2>Code golf</h2>
+<h2>in Ruby</h2>
+<h2>⛳</h2>
+
+<p>Radosław Bułat, github.com/radarek<br>
+KRUG, 17.09.2024</p>
+
+</section>
+<section>
+
+<h2>Before we start…</h2>
+
+</section>
+<section>
+
+<h2>Agenda</h2>
+
+<ul>
+  <li>What is the code golf?</li>
+  <li>Code golf example</li>
+  <li>Magic moments</li>
+  <li>Where to golf?</li>
+</ul>
+
+</section>
+<section>
+<section>
+
+<h2>What is the code golf?</h2>
+
+</section>
+<section>
+
+<p>Code golf is a discipline</p>
+
+<p class="fragment">in which we solve programming challenges</p>
+
+<p class="fragment">using the fewest characters possible.</p>
+
+</section>
+<section>
+
+<p>Just like in real golf<br>
+we want to reach the goal ⛳<br>
+with as few strokes 🏌 as possible.</p>
+
+</section>
+<section>
+
+<p>Only two criteria are important:</p>
+<ul>
+  <li>correctness</li>
+  <li>code length (the less the better)</li>
+</ul>
+
+</section>
+</section>
+
+<section>
+<section>
+
+<h2>First hole</h2>
+
+</section>
+<section>
+
+<p>Write a code that takes a string<br>
+and returns first word that is repeated.</p>
+
+<p class="fragment">Words are separated by spaces and are all lowercase.</p>
+
+</section>
+<section>
+
+<pre><code class="language-ruby">"dom kot pies okno żyrandol pies dom szafa" -&gt; "pies"
+ ---     ----               ---- ---
+</code></pre>
+
+</section>
+<section>
+
+<h3>Let’s start with ungolfed version.</h3>
+
+</section>
+<section>
+
+<pre class="normal"><code class="language-ruby">def first_repeating_word(string)
+  words = string.split
+  seen = {}
+
+  words.find do |word|
+    if seen[word]
+      true
+    else
+      seen[word] = true
+      false
+    end
+  end
+end
+</code></pre>
+
+<pre class="fragment"><code class="language-ruby">first_repeating_word(
+  "dom kot pies okno żyrandol pies dom szafa"
+) #=&gt; "pies"
+</code></pre>
+
+<h3 class="fragment">183 bytes</h3>
+
+</section>
+<section>
+
+<h3>This is our starting point.</h3>
+<h3>Let’s see how much we can shrink it!</h3>
+
+</section>
+<section>
+
+<h3>Let’s apply golf tricks one by one.</h3>
+
+</section>
+<section>
+
+<h3>Use single letter names for everything.</h3>
+
+</section>
+<section>
+
+<p><code>first_repeating_word</code> -&gt; <code>f</code><br>
+<code>string</code> -&gt; <code>s</code><br>
+<code>words</code> -&gt; <code>a</code><br>
+<code>word</code> -&gt; <code>w</code></p>
+
+</section>
+<section>
+
+<pre><code class="language-ruby">def f(s)
+  a = s.split
+  h = {}
+
+  a.find do |w|
+    if h[w]
+      true
+    else
+      h[w] = true
+      false
+    end
+  end
+end
+</code></pre>
+
+<h3 class="fragment">128 bytes</h3>
+
+</section>
+<section>
+
+<h3>Remove unnecessary spaces.</h3>
+
+</section>
+<section>
+
+<pre class="large"><code class="language-ruby">h = {}
+</code></pre>
+<p>-&gt;</p>
+
+<pre class="large"><code class="language-ruby">h={}
+</code></pre>
+
+</section>
+<section>
+
+<pre class="large"><code class="language-ruby">do |w|
+</code></pre>
+<p>-&gt;</p>
+
+<pre class="large"><code class="language-ruby">do|w|
+</code></pre>
+
+<p>etc.</p>
+
+</section>
+<section>
+
+<pre><code class="language-ruby">def f(s)
+a=s.split
+h={}
+a.find do|w|
+if h[w]
+true
+else
+h[w]=true
+false
+end
+end
+end
+</code></pre>
+
+<h3 class="fragment">82 bytes</h3>
+
+</section>
+<section>
+
+<h3>Use <code>{}</code> blocks instead of <code>do end</code>.</h3>
+
+</section>
+<section>
+
+<pre class="large"><code class="language-ruby">a.find do|w|
+end
+</code></pre>
+<p>-&gt;</p>
+
+<pre class="large"><code class="language-ruby">a.find{|w|
+}
+</code></pre>
+
+</section>
+<section>
+
+<pre><code class="language-ruby">def f(s)
+a=s.split
+h={}
+a.find{|w|
+if h[w]
+true
+else
+h[w]=true
+false
+end
+}
+end
+</code></pre>
+
+<h3 class="fragment">78 bytes</h3>
+
+</section>
+<section>
+
+<h3>Do not use variables</h3>
+<h3>if they are not needed.</h3>
+
+</section>
+<section>
+
+<pre class="large"><code class="language-ruby">a=s.split
+a.find{|w|
+</code></pre>
+<p>-&gt;</p>
+
+<pre class="large"><code class="language-ruby">s.split.find{|w|
+</code></pre>
+
+</section>
+<section>
+
+<pre><code class="language-ruby">def f(s)
+h={}
+s.split.find{|w|
+if h[w]
+true
+else
+h[w]=true
+false
+end
+}
+end
+</code></pre>
+
+<h3>74 bytes</h3>
+
+</section>
+<section>
+
+<h3>Use <code>?:</code> ternary if operator instead of <code>if else end</code>.</h3>
+
+</section>
+<section>
+
+<pre class="large"><code class="language-ruby">if condition
+  expression1
+else
+  expression2
+end
+</code></pre>
+<p>-&gt;</p>
+
+<pre class="large"><code class="language-ruby">condition ? expression1 : expression2
+</code></pre>
+
+</section>
+<section>
+
+<pre class="large"><code class="language-ruby">def f(s)
+h={}
+s.split.find{|w|
+h[w]?true:(h[w]=true;false)
+}
+end
+</code></pre>
+
+<h3>64 bytes</h3>
+
+</section>
+<section>
+
+<h3>Use lambda <code>-&gt;</code> instead of method definition.</h3>
+
+</section>
+<section>
+
+<pre class="large"><code class="language-ruby">def f(s)
+end
+</code></pre>
+<p>-&gt;</p>
+
+<pre class="large"><code class="language-ruby">f=-&gt;s{}
+</code></pre>
+
+</section>
+<section>
+
+<pre class="large"><code class="language-ruby">f=-&gt;s{
+h={}
+s.split.find{|w|
+h[w]?true:(h[w]=true;false)
+}
+}
+</code></pre>
+
+<h3>60 bytes</h3>
+
+</section>
+<section>
+
+<h3>Remove unnecessary new lines.</h3>
+
+<h4 class="fragment">Other new lines replace with <code>;</code>
+</h4>
+
+<h5 class="fragment">(just for convenience ;-))</h5>
+
+</section>
+<section>
+
+<pre class="medium"><code class="language-ruby">f=-&gt;s{h={};s.split.find{|w|h[w]?true:(h[w]=true;false)}}
+</code></pre>
+
+<h3>56 bytes</h3>
+
+</section>
+<section>
+
+<h3>Use shorter truthy expressions than <code>true</code> literal.</h3>
+
+</section>
+<section>
+
+<p>Everything except <code>false</code> and <code>nil</code> is treated as <code>true</code> in conditions.</p>
+
+<pre class="large"><code class="language-ruby">0
+1
+"f"
+:f
+{}
+[]
+# all are truthy
+</code></pre>
+
+</section>
+<section>
+
+<pre class="medium"><code class="language-ruby">f=-&gt;s{h={};s.split.find{|w|h[w]?1:(h[w]=1;false)}}
+</code></pre>
+
+<h3>50 bytes</h3>
+
+</section>
+<section>
+
+<h3>Use shorter falsy expressions than <code>false</code> literal.</h3>
+
+</section>
+<section>
+
+<pre class="large"><code class="language-ruby">!0
+!1
+!"f"
+!:f
+!{}
+![]
+# all are falsy
+</code></pre>
+
+</section>
+<section>
+
+<h3>Is there a 1 character expression which evaluates to <code>falsy</code> value?</h3>
+
+</section>
+<section>
+
+<h2>p</h2>
+
+</section>
+<section>
+
+<h1>???</h1>
+
+</section>
+<section>
+
+<h2>Kernel#p</h2>
+
+</section>
+<section>
+
+<pre class="large"><code class="language-ruby">p(1) # prints 1, returns 1
+p()  # prints nothing, returns nil
+p    # prints nothing, returns nil
+</code></pre>
+
+</section>
+<section>
+
+<pre class="medium"><code class="language-ruby">f=-&gt;s{h={};s.split.find{|w|h[w]?1:(h[w]=1;p)}}
+</code></pre>
+<h3>46 bytes</h3>
+
+</section>
+<section>
+
+<h3>Use <code>_1</code>, <code>_2</code> block variables</h3>
+
+</section>
+<section>
+
+<pre class="medium"><code class="language-ruby">f=-&gt;s{h={};s.split.find{h[_1]?1:(h[_1]=1;p)}}
+</code></pre>
+
+<h3>45 bytes</h3>
+
+</section>
+<section>
+
+<h3>Now the fun begins!</h3>
+
+</section>
+<section>
+
+<pre class="large"><code class="language-ruby">h[_1]?1:(h[_1]=1;p)
+</code></pre>
+
+<pre class="fragment large"><code class="language-ruby">h[_1]?1:!h[_1]=1
+</code></pre>
+
+</section>
+<section>
+
+<pre class="large"><code class="language-ruby">f=-&gt;s{h={};s.split.find{h[_1]?1:!h[_1]=1}}
+</code></pre>
+
+<h3>42 bytes</h3>
+
+</section>
+<section>
+
+<pre class="large"><code class="language-ruby">h[_1]?1:!h[_1]=1
+</code></pre>
+
+<pre class="fragment large"><code class="language-ruby">h[_1]||!h[_1]=1
+</code></pre>
+
+</section>
+<section>
+
+<pre class="large"><code class="language-ruby">f=-&gt;s{h={};s.split.find{h[_1]||!h[_1]=1}}
+</code></pre>
+
+<h3>41 bytes</h3>
+
+</section>
+<section>
+
+<pre class="large"><code class="language-ruby">h[_1]||!h[_1]=1
+</code></pre>
+
+<pre class="fragment large"><code class="language-ruby">!h[_1]=!h[_1]
+</code></pre>
+
+</section>
+<section>
+
+<pre class="large"><code class="language-ruby">f=-&gt;s{h={};s.split.find{!h[_1]=!h[_1]}}
+</code></pre>
+
+<h3>39 bytes</h3>
+
+</section>
+<section>
+
+<pre class="large"><code class="language-ruby">h={};
+</code></pre>
+
+<pre class="fragment large"><code class="language-ruby">-&gt;s,**h{} # use ruby keyword arguments
+</code></pre>
+
+</section>
+<section>
+
+<pre class="large"><code class="language-ruby">f=-&gt;s,**h{s.split.find{!h[_1]=!h[_1]}}
+</code></pre>
+
+<h3>38 bytes</h3>
+
+</section>
+<section>
+
+<pre class="large"><code class="language-ruby">h[_1]=!h[_1]
+</code></pre>
+
+<pre class="fragment large"><code class="language-ruby">nil^1  #=&gt; true
+true^1 #=&gt; false
+</code></pre>
+
+<pre class="fragment large"><code class="language-ruby">h[_1]=h[_1]^1
+h[_1]^=1
+</code></pre>
+
+</section>
+<section>
+
+<pre class="large"><code class="language-ruby">f=-&gt;s,**h{s.split.find{!h[_1]^=1}}
+</code></pre>
+
+<h3>34 bytes</h3>
+
+</section>
+<section>
+
+<h3>Before vs After</h3>
+
+</section>
+<section>
+
+<pre><code class="language-ruby">def first_repeating_word(string)
+  words = string.split
+  seen = {}
+
+  words.find do |word|
+    if seen[word]
+      true
+    else
+      seen[word] = true
+      false
+    end
+  end
+end
+</code></pre>
+
+<pre><code class="language-ruby">f=-&gt;s,**h{s.split.find{!h[_1]^=1}}
+</code></pre>
+
+</section>
+<section>
+
+<h3>Evolution of solutions</h3>
+
+<pre><code class="language-ruby">f=-&gt;s{h={};s.split.find{|w|h[w]?true:(h[w]=true;false)}}
+f=-&gt;s{h={};s.split.find{|w|h[w]?1:(h[w]=1;false)}}
+f=-&gt;s{h={};s.split.find{|w|h[w]?1:(h[w]=1;p)}}
+f=-&gt;s{h={};s.split.find{h[_1]?1:(h[_1]=1;p)}}
+f=-&gt;s{h={};s.split.find{h[_1]?1:!h[_1]=1}}
+f=-&gt;s{h={};s.split.find{h[_1]||!h[_1]=1}}
+f=-&gt;s{h={};s.split.find{!h[_1]=!h[_1]}}
+f=-&gt;s,**h{s.split.find{!h[_1]=!h[_1]}}
+f=-&gt;s,**h{s.split.find{!h[_1]^=1}}
+</code></pre>
+
+</section>
+</section>
+
+<section>
+<section>
+
+<h2>The alphabet</h2>
+
+</section>
+<section>
+
+<h3 class="fragment">Single character strings</h3>
+
+<pre><code class="language-ruby">?a
+??
+?ę
+</code></pre>
+
+<pre class="fragment"><code class="language-ruby">"a"
+"?"
+"ę"
+</code></pre>
+
+</section>
+<section>
+
+<h2>SIDEQUEST</h2>
+<h3>Can you parse this?</h3>
+<h4>(Ruby can)</h4>
+
+<pre class="large"><code class="language-ruby">?????:??
+</code></pre>
+
+<pre class="fragment large"><code class="language-ruby">?? ? ?? : ??
+</code></pre>
+
+<pre class="fragment large"><code class="language-ruby">"?" ? "?" : "?" #=&gt; "?"
+</code></pre>
+
+</section>
+<section>
+
+<h3 class="fragment">Joining arrays</h3>
+
+<pre class="large"><code class="language-ruby">[1,2,3,4]*''
+[1,2,3,4]*"x"
+</code></pre>
+
+<pre class="fragment large"><code class="language-ruby">[1,2,3,4].join    #=&gt; "1234"
+[1,2,3,4].join"x" #=&gt; "1x2x3x4"
+</code></pre>
+
+<pre class="fragment large"><code class="language-ruby">[1,2,3,4]*?x      #=&gt; "1x2x3x4"
+</code></pre>
+
+</section>
+<section>
+
+<h3 class="fragment">Array#uniq</h3>
+
+<pre class="large"><code class="language-ruby">a&amp;a
+a|a
+a|[]
+</code></pre>
+
+<pre class="fragment large"><code class="language-ruby">a.uniq
+</code></pre>
+
+</section>
+<section>
+
+<h3 class="fragment large">n-1, n+1</h3>
+
+<pre class="large"><code class="language-ruby">~-n
+-~n
+</code></pre>
+
+<pre class="fragment large"><code class="language-ruby">n-1
+n+1
+</code></pre>
+
+<h3 class="fragment">What’s the point then?</h3>
+
+<pre class="fragment large"><code class="language-ruby">m*(n+1)
+m*-~n
+</code></pre>
+
+</section>
+<section>
+
+<h3 class="fragment">Operator methods</h3>
+
+<pre class="large"><code class="language-ruby">"%f".%1.0+0.5
+</code></pre>
+
+<pre class="fragment large"><code class="language-ruby">"%f"%(1.0+0.5)
+</code></pre>
+
+</section>
+<section>
+
+<h3>There are many more things like this.</h3>
+
+</section>
+<section>
+
+<h3>Discovering them is just fun!</h3>
+
+</section>
+</section>
+
+<section>
+<section>
+
+<h3>Magic moments</h3>
+
+</section>
+<section>
+
+<h3>The story of one challenge</h3>
+
+</section>
+<section>
+
+<p><a href="https://code.golf/levenshtein-distance#ruby">https://code.golf/levenshtein-distance#ruby</a></p>
+
+</section>
+<section>
+
+<p><img width="60%" src="images/levenshtein.png"></p>
+
+</section>
+<section>
+
+<p>Usually means one of:</p>
+<ul>
+  <li>the problem is simple to solve</li>
+  <li>the solution is available publicly</li>
+  <li>there is a built-in</li>
+</ul>
+
+</section>
+<section>
+
+<h3>1st and 2nd were eliminated.</h3>
+
+</section>
+<section>
+
+<h3>Searching in the source code I found a method</h3>
+
+<pre class="medium"><code class="language-ruby">DidYouMean::Levenshtein.distance("foo", "fo") #=&gt; 1
+</code></pre>
+
+</section>
+<section>
+
+<h3>That lead me to 52 bytes solution</h3>
+
+<pre class="medium"><code class="language-ruby">$*.map{p DidYouMean::Levenshtein.distance *_1.split}
+</code></pre>
+
+</section>
+<section>
+
+<h3>I was about to stop here but…</h3>
+
+</section>
+<section>
+
+<h3>…I found this</h3>
+
+<pre class="small"><code class="language-plain">$ grep -Ri levenshtein .
+(...)
+./3.1.0/rubygems/text.rb:
+# Vendored version of DidYouMean::Levenshtein.distance from the ruby/did_you_mean gem @ 1.4.0
+                      --------------------------------
+</code></pre>
+
+</section>
+<section>
+
+<h3>It looked like the code in my solution</h3>
+<h1>🤔</h1>
+
+</section>
+<section>
+
+<h3>Then I checked this…</h3>
+
+<p><img width="100%" src="images/grep-text.png"></p>
+
+<p class="fragment"><img width="100%" src="images/grep-text-output.png"></p>
+
+</section>
+<section>
+
+<h3>…and this</h3>
+
+<p><img width="100%" src="images/index-text.png"></p>
+
+<p class="fragment"><img width="100%" src="images/index-text-output.png"></p>
+
+</section>
+<section>
+
+<ul>
+  <li>file <code>rubygems/text.rb</code> is autoloaded</li>
+  <li>path to the file is in <code>$"[20]</code>
+</li>
+  <li>the file contains the longest part of the code</li>
+</ul>
+
+</section>
+<section>
+
+<h3>This is what I came up with</h3>
+
+<pre class="fragment medium"><code class="language-ruby">eval"$*.map{p#{IO.read$"[20],34,1280}*_1.split}"
+</code></pre>
+
+<pre class="fragment medium"><code class="language-ruby">IO.read($"[20],34,1280)
+</code></pre>
+
+<pre class="fragment medium"><code class="language-ruby">" DidYouMean::Levenshtein.distance "
+</code></pre>
+
+<pre class="fragment"><code class="language-ruby">eval"$*.map{p DidYouMean::Levenshtein.distance *_1.split}"
+</code></pre>
+
+</section>
+<section>
+
+<h1>😈</h1>
+
+<pre><code class="language-ruby">$*.map{p DidYouMean::Levenshtein.distance *_1.split}
+</code></pre>
+<h3>52 bytes</h3>
+
+<pre><code class="language-ruby">eval"$*.map{p DidYouMean::Levenshtein.distance *_1.split}"
+</code></pre>
+<h3>48 bytes</h3>
+
+</section>
+<section>
+
+<p>Unfortunately in the current version of rubygems the text.rb file is no longer autoloaded.<br>
+This solution doen’t work anymore.</p>
+
+</section>
+</section>
+
+<section>
+<section>
+
+<h3>Where to golf?</h3>
+
+<ul>
+  <li>
+<a href="https://codegolf.stackexchange.com/">codegolf.stackexchange.com</a> - public solutions</li>
+  <li>
+<a href="https://code.golf/">code.golf</a> - hidden solutions, rankings, many languages</li>
+  <li>
+<a href="https://www.codingame.com/multiplayer/clashofcode">codingame.com</a> - private clashes</li>
+  <li>
+<a href="http://golf.shinh.org/all.rb">golf.shinh.org</a> - very oldschool but many public solutions</li>
+</ul>
+
+</section>
+<section>
+
+<h3>The best way to start is…</h3>
+
+<h3 class="fragment">…to challenge your friends!</h3>
+
+</section>
+<section>
+
+</section>
+</section>
+
+  </div>
+</div>
+
+<script src="js/reveal.js"></script>
+
+
+<script>
+  (function() {
+  function extend( a, b ) {
+    for(var i in b) {
+      a[i] = b[i];
+    }
+  }
+  var baseOptions = {
+    transition: 'default',
+    hash: true,
+    dependencies: [
+      { src: 'plugin/markdown/marked.js' },
+      { src: 'plugin/markdown/markdown.js' },
+      { src: 'plugin/highlight/highlight.js' },
+      { src: 'plugin/notes/notes.js', async: true }
+    ]
+  };
+
+  
+
+  var configOptions = {"controls":false,"progress":false}
+  var initializeOptions = {};
+  extend(initializeOptions, baseOptions);
+  extend(initializeOptions, configOptions);
+  Reveal.initialize(initializeOptions);
+})();
+
+</script>
+
+  </body>
+</html>
