@@ -37,7 +37,8 @@
 <h2>in Ruby</h2>
 <h2>⛳</h2>
 
-<p>Radosław Bułat, github.com/radarek<br>
+<p>Radosław Bułat<br>
+<a href="https://github.com/radarek">[github]</a> <a href="https://discordapp.com/users/649042890017996810">[discord]</a><br>
 KRUG, 17.09.2024</p>
 
 </section>
@@ -51,14 +52,18 @@ KRUG, 17.09.2024</p>
 <h2>Agenda</h2>
 
 <ul>
-  <li>What is the code golf?</li>
-  <li>Code golf example</li>
+  <li>What is code golf?</li>
+  <li>Out first challenge</li>
   <li>Magic moments</li>
   <li>Where to golf?</li>
+  <li>Summary</li>
 </ul>
 
 </section>
 <section>
+<section>
+
+</section>
 <section>
 
 <h2>What is the code golf?</h2>
@@ -82,7 +87,7 @@ with as few strokes 🏌 as possible.</p>
 </section>
 <section>
 
-<p>Only two criteria are important:</p>
+<p>The most important criteria are:</p>
 <ul>
   <li>correctness</li>
   <li>code length (the less the better)</li>
@@ -94,7 +99,10 @@ with as few strokes 🏌 as possible.</p>
 <section>
 <section>
 
-<h2>First hole</h2>
+</section>
+<section>
+
+<h2>Our first challenge</h2>
 
 </section>
 <section>
@@ -611,9 +619,27 @@ f=-&gt;s,**h{s.split.find{!h[_1]^=1}}
 </code></pre>
 
 </section>
+<section>
+
+<h3>Conclusions</h3>
+
+</section>
+<section>
+
+<h3>We ended up with short and quite cryptic but functionally the same code.</h3>
+
+</section>
+<section>
+
+<h3>Doesn’t it sound like a fun?</h3>
+
+</section>
 </section>
 
 <section>
+<section>
+
+</section>
 <section>
 
 <h2>The alphabet</h2>
@@ -621,16 +647,16 @@ f=-&gt;s,**h{s.split.find{!h[_1]^=1}}
 </section>
 <section>
 
-<h3 class="fragment">Single character strings</h3>
+<h3>Single character strings</h3>
 
-<pre><code class="language-ruby">?a
-??
-?ę
-</code></pre>
-
-<pre class="fragment"><code class="language-ruby">"a"
+<pre><code class="language-ruby">"a"
 "?"
 "ę"
+</code></pre>
+
+<pre class="fragment"><code class="language-ruby">?a    #=&gt; "a"
+??    #=&gt; "?"
+?ę    #=&gt; "ę"
 </code></pre>
 
 </section>
@@ -652,14 +678,14 @@ f=-&gt;s,**h{s.split.find{!h[_1]^=1}}
 </section>
 <section>
 
-<h3 class="fragment">Joining arrays</h3>
+<h3>Array#join</h3>
 
-<pre class="large"><code class="language-ruby">[1,2,3,4]*''
-[1,2,3,4]*"x"
+<pre class="large"><code class="language-ruby">[1,2,3,4].join    #=&gt; "1234"
+[1,2,3,4].join"x" #=&gt; "1x2x3x4"
 </code></pre>
 
-<pre class="fragment large"><code class="language-ruby">[1,2,3,4].join    #=&gt; "1234"
-[1,2,3,4].join"x" #=&gt; "1x2x3x4"
+<pre class="fragment large"><code class="language-ruby">[1,2,3,4]*''      #=&gt; "1234"
+[1,2,3,4]*"x"     #=&gt; "1x2x3x4"
 </code></pre>
 
 <pre class="fragment large"><code class="language-ruby">[1,2,3,4]*?x      #=&gt; "1x2x3x4"
@@ -668,30 +694,33 @@ f=-&gt;s,**h{s.split.find{!h[_1]^=1}}
 </section>
 <section>
 
-<h3 class="fragment">Array#uniq</h3>
+<h3>Array#uniq</h3>
 
-<pre class="large"><code class="language-ruby">a&amp;a
-a|a
-a|[]
+<pre class="large"><code class="language-ruby">a=[1,2,3,1,2]
 </code></pre>
 
-<pre class="fragment large"><code class="language-ruby">a.uniq
+<pre class="large"><code class="language-ruby">a.uniq
+</code></pre>
+
+<pre class="fragment large"><code class="language-ruby">a&amp;a
+a|a
+a|[]
 </code></pre>
 
 </section>
 <section>
 
-<h3 class="fragment large">n-1, n+1</h3>
+<h3>n+1, n-1</h3>
 
-<pre class="large"><code class="language-ruby">~-n
--~n
+<pre class="large"><code class="language-ruby">n+1
+n-1
 </code></pre>
 
-<pre class="fragment large"><code class="language-ruby">n-1
-n+1
+<pre class="fragment large"><code class="language-ruby">-~n
+~-n
 </code></pre>
 
-<h3 class="fragment">What’s the point then?</h3>
+<h3 class="fragment">What’s the point?</h3>
 
 <pre class="fragment large"><code class="language-ruby">m*(n+1)
 m*-~n
@@ -700,12 +729,38 @@ m*-~n
 </section>
 <section>
 
-<h3 class="fragment">Operator methods</h3>
+<h3>Why it works?</h3>
 
-<pre class="large"><code class="language-ruby">"%f".%1.0+0.5
+<p class="fragment"><code>~</code> negates (flips) all bits</p>
+
+<p class="fragment"><code>5</code> (dec) is <code>0000 0101</code> (bin)</p>
+
+<p class="fragment"><code>~5</code> (dec) is <code>1111 1010</code> (bin)</p>
+
+<p class="fragment">which is exactly <code>-6</code> in two’s complement representation</p>
+
+<p class="fragment"><code>-(-6) == 6 == 5+1</code></p>
+
+</section>
+<section>
+
+<h3>Operator methods</h3>
+
+<pre class="large"><code class="language-ruby">"%f"%(1.0+0.5)
 </code></pre>
 
-<pre class="fragment large"><code class="language-ruby">"%f"%(1.0+0.5)
+<pre class="fragment large"><code class="language-ruby">"%f".%1.0+0.5
+</code></pre>
+
+</section>
+<section>
+
+<h3>reduce:*</h3>
+
+<pre class="large"><code class="language-ruby">[1,2,3,4].reduce:*    #=&gt; 24
+</code></pre>
+
+<pre class="fragment large"><code class="language-ruby">eval [1,2,3,4]*?*     #=&gt; 24
 </code></pre>
 
 </section>
@@ -724,6 +779,9 @@ m*-~n
 <section>
 <section>
 
+</section>
+<section>
+
 <h3>Magic moments</h3>
 
 </section>
@@ -734,7 +792,17 @@ m*-~n
 </section>
 <section>
 
+<h3>Levenshtein Distance</h3>
+
 <p><a href="https://code.golf/levenshtein-distance#ruby">https://code.golf/levenshtein-distance#ruby</a></p>
+
+</section>
+<section>
+
+<pre><code>$ ruby solver.rb "foo fo" "bar na"
+1
+2
+</code></pre>
 
 </section>
 <section>
@@ -782,11 +850,19 @@ m*-~n
 
 <h3>…I found this</h3>
 
-<pre class="small"><code class="language-plain">$ grep -Ri levenshtein .
+<pre class="normal"><code class="language-shell">$ cd ~/.rbenv/versions/3.1.0/lib/ruby
+$ grep -Ri levenshtein .
 (...)
 ./3.1.0/rubygems/text.rb:
-# Vendored version of DidYouMean::Levenshtein.distance from the ruby/did_you_mean gem @ 1.4.0
-                      --------------------------------
+# Vendored version of DidYouMean::Levenshtein.distance from \
+the ruby/did_you_mean gem @ 1.4.0
+</code></pre>
+
+</section>
+<section>
+
+<pre class="medium"><code class="language-plain">Vendored version of DidYouMean::Levenshtein.distance
+                    --------------------------------
 </code></pre>
 
 </section>
@@ -831,7 +907,7 @@ m*-~n
 <pre class="fragment medium"><code class="language-ruby">eval"$*.map{p#{IO.read$"[20],34,1280}*_1.split}"
 </code></pre>
 
-<pre class="fragment medium"><code class="language-ruby">IO.read($"[20],34,1280)
+<pre class="fragment medium"><code class="language-ruby">IO.read$"[20],34,1280
 </code></pre>
 
 <pre class="fragment medium"><code class="language-ruby">" DidYouMean::Levenshtein.distance "
@@ -857,21 +933,36 @@ m*-~n
 <section>
 
 <p>Unfortunately in the current version of rubygems the text.rb file is no longer autoloaded.<br>
-This solution doen’t work anymore.</p>
+This solution doesn’t work anymore.</p>
 
 </section>
 </section>
 
 <section>
+<section>
+
+</section>
+<section>
+
+<h2>How to get started?</h2>
+
+</section>
+<section>
+
+<h3>The best way is…</h3>
+
+<h3 class="fragment">…to challenge your friends!</h3>
+
+</section>
 <section>
 
 <h3>Where to golf?</h3>
 
 <ul>
   <li>
-<a href="https://codegolf.stackexchange.com/">codegolf.stackexchange.com</a> - public solutions</li>
-  <li>
 <a href="https://code.golf/">code.golf</a> - hidden solutions, rankings, many languages</li>
+  <li>
+<a href="https://codegolf.stackexchange.com/">codegolf.stackexchange.com</a> - public solutions</li>
   <li>
 <a href="https://www.codingame.com/multiplayer/clashofcode">codingame.com</a> - private clashes</li>
   <li>
@@ -879,14 +970,122 @@ This solution doen’t work anymore.</p>
 </ul>
 
 </section>
+</section>
+
 <section>
-
-<h3>The best way to start is…</h3>
-
-<h3 class="fragment">…to challenge your friends!</h3>
+<section>
 
 </section>
 <section>
+
+<h2>Summary</h2>
+
+</section>
+<section>
+
+<h3>Technically, code golf is all about shortening code.</h3>
+
+</section>
+<section>
+
+<h3>However, to achieve this we have to explore different solutions and push language features to the limits.</h3>
+
+</section>
+<section>
+
+<h3>At the same time, having full control over the code.</h3>
+
+</section>
+<section>
+
+<h3>Although in a specific way, it creates great conditions for expanding knowledge about the language and its intricacies.</h3>
+
+</section>
+</section>
+<section>
+
+<h1>Thank you!</h1>
+
+</section>
+<section>
+<section>
+
+<h1>Wait!</h1>
+
+</section>
+<section>
+
+<h3>I have 2 challenges for you</h3>
+
+</section>
+<section>
+
+<h2>Challenge 1</h2>
+
+</section>
+<section>
+
+<p>Write a Ruby ​​program that prints all numbers of regular trams in Kraków in ascending order.</p>
+
+<p>Regular trams: 1 3 4 5 8 9 10 11 13 14 17 18 19 20 21 22 24 49 50 52</p>
+
+</section>
+<section>
+
+<pre><code class="language-bash">$ ruby tramwaje.rb
+1
+3
+4
+5
+(...)
+13
+24
+49
+50
+52
+</code></pre>
+
+</section>
+<section>
+
+<h2>Challenge 2</h2>
+
+</section>
+<section>
+
+<p>Write a Ruby program that prints how many times the bugle call (hejnał) is played in a given time range within a 24-hour day. The bugle call is played every full hour.</p>
+
+</section>
+<section>
+
+<pre><code class="language-bash">$ ruby hejnal.rb 17:00 21:00
+5
+</code></pre>
+
+<pre><code class="language-bash">$ ruby hejnal.rb 17:01 21:00
+4
+</code></pre>
+
+<pre><code class="language-bash">$ ruby hejnal.rb 17:01 20:59
+3
+</code></pre>
+
+<pre><code class="language-bash">$ ruby hejnal.rb 17:01 17:40
+0
+</code></pre>
+
+<pre><code class="language-bash">$ ruby hejnal.rb 00:00 23:59
+24
+</code></pre>
+
+<p>There are no cases like <code>17:00 00:00</code>. The second time is always &gt;= the first time.</p>
+
+</section>
+<section>
+
+<p>Solutions (files) send to radek.bulat@gmail.com with title “KRUG golf #1”.</p>
+
+<p>Deadline: 31.09.2024</p>
 
 </section>
 </section>

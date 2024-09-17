@@ -35,7 +35,8 @@
 ## in Ruby
 ## ⛳
 
-Radosław Bułat, github.com/radarek
+Radosław Bułat
+[[github]](https://github.com/radarek) [[discord]](https://discordapp.com/users/649042890017996810)
 KRUG, 17.09.2024
 
 ---
@@ -46,12 +47,15 @@ KRUG, 17.09.2024
 
 ## Agenda
 
-* What is the code golf?
-* Code golf example
+* What is code golf?
+* Out first challenge
 * Magic moments
 * Where to golf?
+* Summary
 
 ***
+
+---
 
 ## What is the code golf?
 
@@ -73,7 +77,7 @@ with as few strokes 🏌 as possible.
 
 ---
 
-Only two criteria are important:
+The most important criteria are:
 * correctness
 * code length (the less the better)
 
@@ -81,7 +85,9 @@ Only two criteria are important:
 
 ***
 
-## First hole
+---
+
+## Our first challenge
 
 ---
 
@@ -635,28 +641,41 @@ f=->s,**h{s.split.find{!h[_1]=!h[_1]}}
 f=->s,**h{s.split.find{!h[_1]^=1}}
 ```
 
+---
+
+### Conclusions
+
+---
+
+### We ended up with short and quite cryptic but functionally the same code.
+
+---
+
+### Doesn't it sound like a fun?
+
 ***
 
 ***
+
+---
 
 ## The alphabet
 
 ---
 
-{:.fragment}
 ### Single character strings
 
-```ruby
-?a
-??
-?ę
-```
-
-{:.fragment}
 ```ruby
 "a"
 "?"
 "ę"
+```
+
+{:.fragment}
+```ruby
+?a    #=> "a"
+??    #=> "?"
+?ę    #=> "ę"
 ```
 
 ---
@@ -682,19 +701,18 @@ f=->s,**h{s.split.find{!h[_1]^=1}}
 
 ---
 
-{:.fragment}
-### Joining arrays
+### Array#join
 
 {:.large}
 ```ruby
-[1,2,3,4]*''
-[1,2,3,4]*"x"
+[1,2,3,4].join    #=> "1234"
+[1,2,3,4].join"x" #=> "1x2x3x4"
 ```
 
 {:.fragment .large}
 ```ruby
-[1,2,3,4].join    #=> "1234"
-[1,2,3,4].join"x" #=> "1x2x3x4"
+[1,2,3,4]*''      #=> "1234"
+[1,2,3,4]*"x"     #=> "1x2x3x4"
 ```
 
 {:.fragment .large}
@@ -704,40 +722,43 @@ f=->s,**h{s.split.find{!h[_1]^=1}}
 
 ---
 
-{:.fragment}
 ### Array#uniq
 
 {:.large}
+```ruby
+a=[1,2,3,1,2]
+```
+
+{:.large}
+```ruby
+a.uniq
+```
+
+{:.fragment .large}
 ```ruby
 a&a
 a|a
 a|[]
 ```
 
-{:.fragment .large}
-```ruby
-a.uniq
-```
-
 ---
 
-{:.fragment .large}
-### n-1, n+1
+### n+1, n-1
 
 {:.large}
 ```ruby
-~-n
--~n
+n+1
+n-1
 ```
 
 {:.fragment .large}
 ```ruby
-n-1
-n+1
+-~n
+~-n
 ```
 
 {:.fragment}
-### What's the point then?
+### What's the point?
 
 {:.fragment .large}
 ```ruby
@@ -747,17 +768,49 @@ m*-~n
 
 ---
 
+### Why it works?
+
 {:.fragment}
+`~` negates (flips) all bits
+
+{:.fragment}
+`5` (dec) is `0000 0101` (bin)
+
+{:.fragment}
+`~5` (dec) is `1111 1010` (bin)
+
+{:.fragment}
+which is exactly `-6` in two's complement representation
+
+{:.fragment}
+`-(-6) == 6 == 5+1`
+
+---
+
 ### Operator methods
 
 {:.large}
 ```ruby
-"%f".%1.0+0.5
+"%f"%(1.0+0.5)
 ```
 
 {:.fragment .large}
 ```ruby
-"%f"%(1.0+0.5)
+"%f".%1.0+0.5
+```
+
+---
+
+### reduce:*
+
+{:.large}
+```ruby
+[1,2,3,4].reduce:*    #=> 24
+```
+
+{:.fragment .large}
+```ruby
+eval [1,2,3,4]*?*     #=> 24
 ```
 
 ---
@@ -772,6 +825,8 @@ m*-~n
 
 ***
 
+---
+
 ### Magic moments
 
 ---
@@ -780,7 +835,17 @@ m*-~n
 
 ---
 
+### Levenshtein Distance
+
 https://code.golf/levenshtein-distance#ruby
+
+---
+
+```
+$ ruby solver.rb "foo fo" "bar na"
+1
+2
+```
 
 ---
 
@@ -823,13 +888,22 @@ $*.map{p DidYouMean::Levenshtein.distance *_1.split}
 
 ### ...I found this
 
-{:.small}
-```plain
+{:.normal}
+```shell
+$ cd ~/.rbenv/versions/3.1.0/lib/ruby
 $ grep -Ri levenshtein .
 (...)
 ./3.1.0/rubygems/text.rb:
-# Vendored version of DidYouMean::Levenshtein.distance from the ruby/did_you_mean gem @ 1.4.0
-                      --------------------------------
+# Vendored version of DidYouMean::Levenshtein.distance from \
+the ruby/did_you_mean gem @ 1.4.0
+```
+
+---
+
+{:.medium}
+```plain
+Vendored version of DidYouMean::Levenshtein.distance
+                    --------------------------------
 ```
 
 ---
@@ -872,7 +946,7 @@ eval"$*.map{p#{IO.read$"[20],34,1280}*_1.split}"
 
 {:.fragment .medium}
 ```ruby
-IO.read($"[20],34,1280)
+IO.read$"[20],34,1280
 ```
 
 {:.fragment .medium}
@@ -902,26 +976,136 @@ eval"$*.map{p DidYouMean::Levenshtein.distance *_1.split}"
 ---
 
 Unfortunately in the current version of rubygems the text.rb file is no longer autoloaded.
-This solution doen't work anymore.
+This solution doesn't work anymore.
 
 ***
 
 ***
-
-### Where to golf?
-
-* [codegolf.stackexchange.com](https://codegolf.stackexchange.com/) - public solutions
-* [code.golf](https://code.golf/) - hidden solutions, rankings, many languages
-* [codingame.com](https://www.codingame.com/multiplayer/clashofcode) - private clashes
-* [golf.shinh.org](http://golf.shinh.org/all.rb) - very oldschool but many public solutions
 
 ---
 
-### The best way to start is...
+## How to get started?
+
+---
+
+### The best way is...
 
 {:.fragment}
 ### ...to challenge your friends!
 
 ---
+
+### Where to golf?
+
+* [code.golf](https://code.golf/) - hidden solutions, rankings, many languages
+* [codegolf.stackexchange.com](https://codegolf.stackexchange.com/) - public solutions
+* [codingame.com](https://www.codingame.com/multiplayer/clashofcode) - private clashes
+* [golf.shinh.org](http://golf.shinh.org/all.rb) - very oldschool but many public solutions
+
+***
+
+***
+
+---
+
+## Summary
+
+---
+
+### Technically, code golf is all about shortening code.
+
+---
+
+### However, to achieve this we have to explore different solutions and push language features to the limits.
+
+---
+
+### At the same time, having full control over the code.
+
+---
+
+### Although in a specific way, it creates great conditions for expanding knowledge about the language and its intricacies.
+
+***
+
+# Thank you!
+
+***
+
+# Wait!
+
+---
+
+### I have 2 challenges for you
+
+---
+
+## Challenge 1
+
+---
+
+Write a Ruby ​​program that prints all numbers of regular trams in Kraków in ascending order.
+
+Regular trams: 1 3 4 5 8 9 10 11 13 14 17 18 19 20 21 22 24 49 50 52
+
+---
+
+```bash
+$ ruby tramwaje.rb
+1
+3
+4
+5
+(...)
+13
+24
+49
+50
+52
+```
+
+---
+
+## Challenge 2
+
+---
+
+Write a Ruby program that prints how many times the bugle call (hejnał) is played in a given time range within a 24-hour day. The bugle call is played every full hour.
+
+---
+
+```bash
+$ ruby hejnal.rb 17:00 21:00
+5
+```
+
+```bash
+$ ruby hejnal.rb 17:01 21:00
+4
+```
+
+```bash
+$ ruby hejnal.rb 17:01 20:59
+3
+```
+
+
+```bash
+$ ruby hejnal.rb 17:01 17:40
+0
+```
+
+```bash
+$ ruby hejnal.rb 00:00 23:59
+24
+```
+
+There are no cases like `17:00 00:00`. The second time is always >= the first time.
+
+---
+
+Solutions (files) send to radek.bulat@gmail.com with title "KRUG golf #1".
+
+Deadline: 31.09.2024
 
 ***
